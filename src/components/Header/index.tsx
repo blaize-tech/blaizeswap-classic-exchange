@@ -19,22 +19,6 @@ import { RowBetween } from '../Row'
 import Web3Status from '../Web3Status'
 // import VersionSwitch from './VersionSwitch'
 
-const HeaderFrame = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-  width: 100%;
-  top: 0;
-  position: absolute;
-  z-index: 2;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 12px 0 0 0;
-    width: calc(100%);
-    position: relative;
-  `};
-`
-
 const HeaderElement = styled.div`
   display: flex;
   align-items: center;
@@ -113,21 +97,6 @@ const BalanceText = styled(Text)`
   `};
 `
 
-/*const StyledText = styled.span`
-  color: #5b3926;
-  font-family: 'Reem Kufi', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  margin-left: 8px;
-  @media (max-width: 400px) {
-    display: none;
-  }
-`
-const MasterChefText = styled.span`
-  font-family: 'Kaushan Script', sans-serif;
-`*/
-
 const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
   [ChainId.MAINNET]: null,
   [ChainId.RINKEBY]: 'Rinkeby',
@@ -143,36 +112,34 @@ export default function Header() {
   const [isDark] = useDarkModeManager()
 
   return (
-    <HeaderFrame>
-      <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem 1rem 0 1rem">
+    <RowBetween style={{ alignItems: 'flex-start' }} padding="20px">
+      <HeaderElement>
+        <Title href=".">
+          <UniIcon>
+            <img style={{ height: 150 }} src={isDark ? LogoDark : Logo} alt="logo" />
+          </UniIcon>
+        </Title>
+      </HeaderElement>
+      <HeaderControls>
         <HeaderElement>
-          <Title href=".">
-            <UniIcon>
-              <img style={{ height: 150 }} src={isDark ? LogoDark : Logo} alt="logo" />
-            </UniIcon>
-          </Title>
+          <TestnetWrapper>
+            {!isMobile && chainId && NETWORK_LABELS[chainId] && <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>}
+          </TestnetWrapper>
+          <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
+            {account && userEthBalance ? (
+              <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
+                {userEthBalance?.toSignificant(4)} ETH
+              </BalanceText>
+            ) : null}
+            <Web3Status />
+          </AccountElement>
         </HeaderElement>
-        <HeaderControls>
-          <HeaderElement>
-            <TestnetWrapper>
-              {!isMobile && chainId && NETWORK_LABELS[chainId] && <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>}
-            </TestnetWrapper>
-            <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-              {account && userEthBalance ? (
-                <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                  {userEthBalance?.toSignificant(4)} ETH
-                </BalanceText>
-              ) : null}
-              <Web3Status />
-            </AccountElement>
-          </HeaderElement>
-          <HeaderElementWrap>
-            {/* <VersionSwitch /> */}
-            <Settings />
-            <Menu />
-          </HeaderElementWrap>
-        </HeaderControls>
-      </RowBetween>
-    </HeaderFrame>
+        <HeaderElementWrap>
+          {/* <VersionSwitch /> */}
+          <Settings />
+          <Menu />
+        </HeaderElementWrap>
+      </HeaderControls>
+    </RowBetween>
   )
 }

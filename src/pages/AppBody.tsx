@@ -2,14 +2,18 @@ import React from 'react'
 import styled from 'styled-components'
 
 export const BodyWrapper = styled.div`
+  background-color: ${({ theme }) => theme.bg1};
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 990px;
   position: relative;
-  max-width: 420px;
+  z-index: 1;
+  padding: 50px 40px 80px;
   width: 100%;
-  background: ${({ theme }) => theme.bg1};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
-    0px 24px 32px rgba(0, 0, 0, 0.01);
-  border-radius: 30px;
-  padding: 1rem;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    padding: 30px 20px 50px;
+  `};
 `
 
 /**

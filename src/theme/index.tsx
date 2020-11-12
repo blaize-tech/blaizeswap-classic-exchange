@@ -49,7 +49,7 @@ export function colors(darkMode: boolean): Colors {
 
     // backgrounds / greys
     bg1: darkMode ? '#212429' : '#FFFFFF',
-    bg2: darkMode ? '#2C2F36' : '#fff7f2',
+    bg2: darkMode ? '#2C2F36' : '#F7F7F9',
     bg3: darkMode ? '#40444F' : '#e6ddd6',
     bg4: darkMode ? '#565A69' : '#CED0D9',
     bg5: darkMode ? '#6C7284' : '#9a7c64',
@@ -59,14 +59,17 @@ export function colors(darkMode: boolean): Colors {
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
 
     //primary colors
-    primary1: darkMode ? '#2172E5' : '#805e49',
-    primary2: darkMode ? '#3680E7' : '#88715f',
-    primary3: darkMode ? '#4D8FEA' : '#aa9585',
-    primary4: darkMode ? '#376bad70' : '#e2d6cf',
+    primary1: darkMode ? '#2172E5' : '#000000',
+    primary2: darkMode ? '#3680E7' : '#c1c1c2',
+    primary3: darkMode ? '#4D8FEA' : '#303035',
+    primary4: darkMode ? '#376bad70' : '#ffffff',
     primary5: darkMode ? '#153d6f70' : '#f0e9e7',
 
     // color text
-    primaryText1: darkMode ? '#6da8ff' : '#805e49',
+    primaryText1: darkMode ? '#6da8ff' : '#ffffff',
+    primaryText2: darkMode ? '#6da8ff' : '#000000',
+    primaryText3: darkMode ? '#6da8ff' : '#828285',
+    primaryText4: darkMode ? '#6da8ff' : '#1E1E23',
 
     // secondary colors
     secondary1: darkMode ? '#2172E5' : '#805e49',
@@ -76,6 +79,7 @@ export function colors(darkMode: boolean): Colors {
     // other
     red1: '#FF6871',
     red2: '#F82D3A',
+    grey: '#E7E7E8',
     green1: '#27AE60',
     yellow1: '#FFE270',
     yellow2: '#F3841E'
@@ -195,7 +199,7 @@ button {
 }
 
 html {
-  font-size: 16px;
+  font-size: 22px;
   font-variant: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -210,10 +214,20 @@ html {
 }
 
 body {
+  min-width: 320px;
   min-height: 100vh;
-  background-position: 0 -30vh;
-  background-repeat: no-repeat;
+  background-size: 10% 100%;
+  background-repeat: repeat-x;
   background-image: ${({ theme }) =>
-    `radial-gradient(50% 50% at 50% 50%, ${theme.primary5} 0%, ${transparentize(1, theme.primary4)} 100%)`};
+    `linear-gradient(90deg, ${theme.grey} 1px, ${transparentize(1, theme.grey)} 1px)`};
+  background-position: 50% 0;
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+      background-size: 12.5% 100%;
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+      background-size: 25% 100%;
+  `};
 }
 `
