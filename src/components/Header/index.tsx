@@ -5,43 +5,36 @@ import { Text } from 'rebass'
 
 import styled from 'styled-components'
 
-import Logo from '../../assets/images/sushiswap-shiny-logo.png'
-import LogoDark from '../../assets/images/sushiswap-shiny-logo-dark.png'
 import { useActiveWeb3React } from '../../hooks'
-import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
 
 import { YellowCard } from '../Card'
 import Settings from '../Settings'
 import Menu from '../Menu'
 
-import { RowBetween } from '../Row'
+import { RowBetween, RowStart, RowEnd } from '../Row'
 import Web3Status from '../Web3Status'
 // import VersionSwitch from './VersionSwitch'
 
-const HeaderElement = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const HeaderElementWrap = styled.div`
-  display: flex;
-  align-items: center;
-
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    margin-top: 0.5rem;
-`};
+const HeaderContainer = styled(RowBetween)`
+  margin-bottom: 90px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 50px;
+  max-width: 1080px;
+  width: 100%;
 `
 
 const Title = styled.a`
-  display: flex;
-  align-items: center;
-  pointer-events: auto;
+  transition: opacity 0.3s;
   text-decoration: none;
-  text-decoration-style: unset;
+  margin-right: 20px;
+  color: ${({ theme }) => theme.text1};
 
-  :hover {
-    cursor: pointer;
+  &:hover {
+    opacity: 0.6;
   }
 `
 
@@ -73,18 +66,7 @@ const NetworkCard = styled(YellowCard)`
   padding: 8px 12px;
 `
 
-const UniIcon = styled.div`
-  transition: transform 0.3s ease;
-  :hover {
-    transform: rotate(-5deg);
-  }
-`
-
-const HeaderControls = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
+const HeaderControls = styled(RowEnd)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     flex-direction: column;
     align-items: flex-end;
@@ -92,7 +74,7 @@ const HeaderControls = styled.div`
 `
 
 const BalanceText = styled(Text)`
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
 `
@@ -109,37 +91,32 @@ export default function Header() {
   const { account, chainId } = useActiveWeb3React()
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
-  const [isDark] = useDarkModeManager()
 
   return (
-    <RowBetween style={{ alignItems: 'flex-start' }} padding="20px">
-      <HeaderElement>
-        <Title href=".">
-          <UniIcon>
-            <img style={{ height: 150 }} src={isDark ? LogoDark : Logo} alt="logo" />
-          </UniIcon>
-        </Title>
-      </HeaderElement>
+    <HeaderContainer>
+      <Title href=".">
+        BlaizeSwap
+      </Title>
       <HeaderControls>
-        <HeaderElement>
+        <RowStart>
           <TestnetWrapper>
             {!isMobile && chainId && NETWORK_LABELS[chainId] && <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>}
           </TestnetWrapper>
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-            {account && userEthBalance ? (
+            {account && userEthBalance && (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
                 {userEthBalance?.toSignificant(4)} ETH
               </BalanceText>
-            ) : null}
+            )}
             <Web3Status />
           </AccountElement>
-        </HeaderElement>
-        <HeaderElementWrap>
+        </RowStart>
+        <RowStart>
           {/* <VersionSwitch /> */}
           <Settings />
           <Menu />
-        </HeaderElementWrap>
+        </RowStart>
       </HeaderControls>
-    </RowBetween>
+    </HeaderContainer>
   )
 }

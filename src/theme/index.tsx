@@ -31,6 +31,18 @@ const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } 
   {}
 ) as any
 
+const mediaFromWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } = Object.keys(MEDIA_WIDTHS).reduce(
+  (accumulator, size) => {
+    ;(accumulator as any)[size] = (a: any, b: any, c: any) => css`
+      @media (max-width: ${(MEDIA_WIDTHS as any)[size]}px) {
+        ${css(a, b, c)}
+      }
+    `
+    return accumulator
+  },
+  {}
+) as any
+
 const white = '#FFFFFF'
 const black = '#000000'
 
@@ -41,7 +53,7 @@ export function colors(darkMode: boolean): Colors {
     black,
 
     // text
-    text1: darkMode ? '#FFFFFF' : '#000000',
+    text1: darkMode ? '#FFFFFF' : '#1E1E23',
     text2: darkMode ? '#C3C5CB' : '#565A69',
     text3: darkMode ? '#6C7284' : '#9a7c64',
     text4: darkMode ? '#565A69' : '#C3C5CB',
@@ -105,6 +117,7 @@ export function theme(darkMode: boolean): DefaultTheme {
 
     // media queries
     mediaWidth: mediaWidthTemplates,
+    mediaFromWidth: mediaFromWidthTemplates,
 
     // css snippets
     flexColumnNoWrap: css`
