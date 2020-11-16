@@ -17,7 +17,7 @@ const MEDIA_WIDTHS = {
   tablet: 768,
   bigTablet: 992,
   laptop: 1200,
-  bigLaptop: 1440,
+  bigLaptop: 1500,
   upToExtraSmall: 500,
   upToSmall: 600,
   upToMedium: 960,
@@ -63,6 +63,8 @@ export function colors(darkMode: boolean): Colors {
     text3: darkMode ? '#6C7284' : '#9a7c64',
     text4: darkMode ? '#565A69' : '#C3C5CB',
     text5: darkMode ? '#2C2F36' : '#e6ddd6',
+    text6: darkMode ? '#2C2F36' : '#858587',
+    text7: darkMode ? '#2C2F36' : '#949496',
 
     // backgrounds / greys
     bg1: darkMode ? '#212429' : '#FFFFFF',
@@ -76,7 +78,7 @@ export function colors(darkMode: boolean): Colors {
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
 
     //primary colors
-    primary1: darkMode ? '#2172E5' : '#000000',
+    primary1: darkMode ? '#2172E5' : '#1e1e23',
     primary2: darkMode ? '#3680E7' : '#c1c1c2',
     primary3: darkMode ? '#4D8FEA' : '#303035',
     primary4: darkMode ? '#376bad70' : '#ffffff',

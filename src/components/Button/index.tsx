@@ -1,7 +1,6 @@
-import { transparentize } from 'polished'
 import React from 'react'
 import styled from 'styled-components'
-import { darken, lighten } from 'polished'
+import { transparentize, darken, lighten } from 'polished'
 
 import { RowBetween } from '../Row'
 import { ChevronDown } from 'react-feather'

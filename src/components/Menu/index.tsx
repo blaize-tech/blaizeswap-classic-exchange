@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { Code, MoreHorizontal, X } from 'react-feather'
 import styled from 'styled-components'
-import { ButtonPrimary } from '../../components/Button'
+import { ButtonPrimary } from '../Button'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import useToggle from '../../hooks/useToggle'
 import { useTranslation } from 'react-i18next'
@@ -11,6 +11,7 @@ import { ExternalLink } from '../../theme'
 const MenuContainer = styled.div`
   position: relative;
 `
+
 const MenuList = styled.ul`
   margin-bottom: 0;
   margin-top: 0;

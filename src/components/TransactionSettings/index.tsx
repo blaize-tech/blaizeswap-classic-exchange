@@ -1,11 +1,9 @@
-import React, { useState, useRef, useContext } from 'react'
-import styled, { ThemeContext } from 'styled-components'
+import React, { useState, useRef } from 'react'
+import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 
 import QuestionHelper from '../QuestionHelper'
-import { TYPE } from '../../theme'
-import { AutoColumn } from '../Column'
-import { RowBetween, RowFixed } from '../Row'
+import { RowBetween, RowStart } from '../Row'
 
 import { darken } from 'polished'
 
@@ -18,6 +16,20 @@ enum SlippageError {
 enum DeadlineError {
   InvalidInput = 'InvalidInput'
 }
+
+const TransactionSettingsContainer = styled.div`
+  margin-bottom: 20px;
+`
+
+const TransactionSettingsText = styled.p`
+  letter-spacing: 0.5px;
+  margin-bottom: 0;
+  margin-right: 6px;
+  margin-top: 0;
+  line-height: 22px;
+  font-size: 14px;
+  color: ${({ theme }) => theme.text6};
+`
 
 const FancyButton = styled.button`
   color: ${({ theme }) => theme.text1};
@@ -82,19 +94,18 @@ const OptionCustom = styled(FancyButton)<{ active?: boolean; warning?: boolean }
 const SlippageEmojiContainer = styled.span`
   color: #f3841e;
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    display: none;  
+    display: none;
   `}
 `
 
-export interface SlippageTabsProps {
+export interface TransactionSettingsProps {
   rawSlippage: number
   setRawSlippage: (rawSlippage: number) => void
   deadline: number
   setDeadline: (deadline: number) => void
 }
 
-export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, setDeadline }: SlippageTabsProps) {
-  const theme = useContext(ThemeContext)
+export default function TransactionSettings({ rawSlippage, setRawSlippage, deadline, setDeadline }: TransactionSettingsProps) {
   const { t } = useTranslation()
 
   const inputRef = useRef<HTMLInputElement>()
@@ -147,108 +158,110 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
   }
 
   return (
-    <AutoColumn gap="md">
-      <AutoColumn gap="sm">
-        <RowFixed>
-          <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
-            {t('slippageTolerance')}
-          </TYPE.black>
-          <QuestionHelper text="Your transaction will revert if the price changes unfavorably by more than this percentage." />
-        </RowFixed>
-        <RowBetween>
-          <Option
-            onClick={() => {
-              setSlippageInput('')
-              setRawSlippage(10)
-            }}
-            active={rawSlippage === 10}
-          >
-            0.1%
-          </Option>
-          <Option
-            onClick={() => {
-              setSlippageInput('')
-              setRawSlippage(50)
-            }}
-            active={rawSlippage === 50}
-          >
-            0.5%
-          </Option>
-          <Option
-            onClick={() => {
-              setSlippageInput('')
-              setRawSlippage(100)
-            }}
-            active={rawSlippage === 100}
-          >
-            1%
-          </Option>
-          <OptionCustom active={![10, 50, 100].includes(rawSlippage)} warning={!slippageInputIsValid} tabIndex={-1}>
-            <RowBetween>
-              {!!slippageInput &&
-              (slippageError === SlippageError.RiskyLow || slippageError === SlippageError.RiskyHigh) ? (
-                <SlippageEmojiContainer>
-                  <span role="img" aria-label="warning">
-                    ⚠️
-                  </span>
-                </SlippageEmojiContainer>
-              ) : null}
-              {/* https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451 */}
-              <Input
-                ref={inputRef as any}
-                placeholder={(rawSlippage / 100).toFixed(2)}
-                value={slippageInput}
-                onBlur={() => {
-                  parseCustomSlippage((rawSlippage / 100).toFixed(2))
-                }}
-                onChange={e => parseCustomSlippage(e.target.value)}
-                color={!slippageInputIsValid ? 'red' : ''}
-              />
-              %
-            </RowBetween>
-          </OptionCustom>
-        </RowBetween>
-        {!!slippageError && (
-          <RowBetween
-            style={{
-              fontSize: '14px',
-              paddingTop: '7px',
-              color: slippageError === SlippageError.InvalidInput ? 'red' : '#F3841E'
-            }}
-          >
-            {slippageError === SlippageError.InvalidInput
-              ? 'Enter a valid slippage percentage'
-              : slippageError === SlippageError.RiskyLow
-              ? 'Your transaction may fail'
-              : 'Your transaction may be frontrun'}
-          </RowBetween>
-        )}
-      </AutoColumn>
+    <TransactionSettingsContainer>
+      <RowStart style={{ marginBottom: 10 }}>
+        <TransactionSettingsText>
+          {t('slippageTolerance')}
+        </TransactionSettingsText>
+        <QuestionHelper
+          text="Your transaction will revert if the price changes unfavorably by more than this percentage."
+        />
+      </RowStart>
 
-      <AutoColumn gap="sm">
-        <RowFixed>
-          <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-          {t('transactionDeadline')}
-          </TYPE.black>
-          <QuestionHelper text="Your transaction will revert if it is pending for more than this long." />
-        </RowFixed>
-        <RowFixed>
-          <OptionCustom style={{ width: '80px' }} tabIndex={-1}>
+      <RowBetween>
+        <Option
+          onClick={() => {
+            setSlippageInput('')
+            setRawSlippage(10)
+          }}
+          active={rawSlippage === 10}
+        >
+          0.1%
+        </Option>
+        <Option
+          onClick={() => {
+            setSlippageInput('')
+            setRawSlippage(50)
+          }}
+          active={rawSlippage === 50}
+        >
+          0.5%
+        </Option>
+        <Option
+          onClick={() => {
+            setSlippageInput('')
+            setRawSlippage(100)
+          }}
+          active={rawSlippage === 100}
+        >
+          1%
+        </Option>
+        <OptionCustom active={![10, 50, 100].includes(rawSlippage)} warning={!slippageInputIsValid} tabIndex={-1}>
+          <RowBetween>
+            {!!slippageInput &&
+            (slippageError === SlippageError.RiskyLow || slippageError === SlippageError.RiskyHigh) ? (
+              <SlippageEmojiContainer>
+                <span role="img" aria-label="warning">
+                  ⚠️
+                </span>
+              </SlippageEmojiContainer>
+            ) : null}
+            {/* https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451 */}
             <Input
-              color={!!deadlineError ? 'red' : undefined}
+              ref={inputRef as any}
+              placeholder={(rawSlippage / 100).toFixed(2)}
+              value={slippageInput}
               onBlur={() => {
-                parseCustomDeadline((deadline / 60).toString())
+                parseCustomSlippage((rawSlippage / 100).toFixed(2))
               }}
-              placeholder={(deadline / 60).toString()}
-              value={deadlineInput}
-              onChange={e => parseCustomDeadline(e.target.value)}
+              onChange={e => parseCustomSlippage(e.target.value)}
+              color={!slippageInputIsValid ? 'red' : ''}
             />
-          </OptionCustom>
-          <TYPE.body style={{ paddingLeft: '8px' }} fontSize={14}>
+            %
+          </RowBetween>
+        </OptionCustom>
+      </RowBetween>
+      {!!slippageError && (
+        <RowBetween
+          style={{
+            fontSize: '14px',
+            paddingTop: '7px',
+            color: slippageError === SlippageError.InvalidInput ? 'red' : '#F3841E'
+          }}
+        >
+          {slippageError === SlippageError.InvalidInput
+            ? 'Enter a valid slippage percentage'
+            : slippageError === SlippageError.RiskyLow
+            ? 'Your transaction may fail'
+            : 'Your transaction may be frontrun'}
+        </RowBetween>
+      )}
+
+      <RowStart style={{ marginBottom: 10 }}>
+        <TransactionSettingsText>
+          {t('transactionDeadline')}
+        </TransactionSettingsText>
+        <QuestionHelper
+          text="Your transaction will revert if it is pending for more than this long."
+        />
+      </RowStart>
+
+      <RowStart>
+        <OptionCustom style={{ width: '80px' }} tabIndex={-1}>
+          <Input
+            color={!!deadlineError ? 'red' : undefined}
+            onBlur={() => {
+              parseCustomDeadline((deadline / 60).toString())
+            }}
+            placeholder={(deadline / 60).toString()}
+            value={deadlineInput}
+            onChange={e => parseCustomDeadline(e.target.value)}
+          />
+        </OptionCustom>
+        <TransactionSettingsText>
           {t('minutes')}
-          </TYPE.body>
-        </RowFixed>
-      </AutoColumn>
-    </AutoColumn>
+        </TransactionSettingsText>
+      </RowStart>
+    </TransactionSettingsContainer>
   )
 }
