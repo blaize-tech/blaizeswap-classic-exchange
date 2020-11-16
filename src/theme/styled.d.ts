@@ -64,6 +64,11 @@ declare module 'styled-components' {
 
     // media queries
     mediaWidth: {
+      phone: ThemedCssFunction<DefaultTheme>
+      tablet: ThemedCssFunction<DefaultTheme>
+      bigTablet: ThemedCssFunction<DefaultTheme>
+      laptop: ThemedCssFunction<DefaultTheme>
+      bigLaptop: ThemedCssFunction<DefaultTheme>
       upToExtraSmall: ThemedCssFunction<DefaultTheme>
       upToSmall: ThemedCssFunction<DefaultTheme>
       upToMedium: ThemedCssFunction<DefaultTheme>
@@ -71,6 +76,11 @@ declare module 'styled-components' {
     }
 
     mediaFromWidth: {
+      phone: ThemedCssFunction<DefaultTheme>
+      tablet: ThemedCssFunction<DefaultTheme>
+      bigTablet: ThemedCssFunction<DefaultTheme>
+      laptop: ThemedCssFunction<DefaultTheme>
+      bigLaptop: ThemedCssFunction<DefaultTheme>
       upToExtraSmall: ThemedCssFunction<DefaultTheme>
       upToSmall: ThemedCssFunction<DefaultTheme>
       upToMedium: ThemedCssFunction<DefaultTheme>

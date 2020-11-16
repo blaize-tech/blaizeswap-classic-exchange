@@ -19,6 +19,7 @@ const Base = styled(RebassButton)<{
   letter-spacing: 0.3em;
   border-radius: ${({ borderRadius }) => borderRadius ? borderRadius : '0'};
   font-weight: 700;
+  line-height: 1;
   text-align: center;
   font-size: 14px;
   min-width: ${({ width }) => (width ? width : 'auto')};

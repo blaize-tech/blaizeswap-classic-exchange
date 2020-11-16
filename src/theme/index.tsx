@@ -13,6 +13,11 @@ import { Colors } from './styled'
 export * from './components'
 
 const MEDIA_WIDTHS = {
+  phone: 576,
+  tablet: 768,
+  bigTablet: 992,
+  laptop: 1200,
+  bigLaptop: 1440,
   upToExtraSmall: 500,
   upToSmall: 600,
   upToMedium: 960,
@@ -22,7 +27,7 @@ const MEDIA_WIDTHS = {
 const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } = Object.keys(MEDIA_WIDTHS).reduce(
   (accumulator, size) => {
     ;(accumulator as any)[size] = (a: any, b: any, c: any) => css`
-      @media (max-width: ${(MEDIA_WIDTHS as any)[size]}px) {
+      @media (max-width: ${(MEDIA_WIDTHS as any)[size] - 0.02}px) {
         ${css(a, b, c)}
       }
     `
@@ -34,7 +39,7 @@ const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } 
 const mediaFromWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } = Object.keys(MEDIA_WIDTHS).reduce(
   (accumulator, size) => {
     ;(accumulator as any)[size] = (a: any, b: any, c: any) => css`
-      @media (max-width: ${(MEDIA_WIDTHS as any)[size]}px) {
+      @media (min-width: ${(MEDIA_WIDTHS as any)[size]}px) {
         ${css(a, b, c)}
       }
     `
@@ -89,7 +94,7 @@ export function colors(darkMode: boolean): Colors {
     secondary3: darkMode ? '#17000b26' : '#f0e9e7',
 
     // other
-    red1: '#FF6871',
+    red1: '#fc5959',
     red2: '#F82D3A',
     grey: '#E7E7E8',
     green1: '#27AE60',
@@ -227,20 +232,34 @@ html {
 }
 
 body {
+  position: relative;
   min-width: 320px;
   min-height: 100vh;
-  background-size: 10% 100%;
-  background-repeat: repeat-x;
-  background-image: ${({ theme }) =>
-    `linear-gradient(90deg, ${theme.grey} 1px, ${transparentize(1, theme.grey)} 1px)`};
-  background-position: 50% 0;
 
-  ${({ theme }) => theme.mediaWidth.upToLarge`
-      background-size: 12.5% 100%;
-  `};
+  &::after {
+    content: '';
+    background-position: 0;
+    background-repeat: repeat-x;
+    background-image: ${({ theme }) =>
+      `linear-gradient(90deg, ${theme.grey} 1px, ${transparentize(1, theme.grey)} 1px)`};
+    background-size: 10% 100%;
+    border-right: 1px solid ${({ theme }) => theme.grey};
+    transform: translateX(-50%);
+    position: absolute;
+    display: block;
+    z-index: -1;
+    height: 100%;
+    width: 1040px;
+    left: 50%;
+    top: 0;
 
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-      background-size: 25% 100%;
-  `};
+    ${({ theme }) => theme.mediaWidth.upToLarge`
+        background-size: 12.5% 100%;
+    `};
+
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+        background-size: 25% 100%;
+    `};
+  }
 }
 `
